@@ -113,6 +113,12 @@ return new class extends Migration
             $table->primary(['communities_id', 'user_id']);
         });
 
+        Schema::create('post_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('type_name')->unique();
+            $table->timestamps();
+        });
+
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('communities_id')->nullable()->constrained('communities')->nullOnDelete();
@@ -135,12 +141,6 @@ return new class extends Migration
             $table->longText('content')->nullable();
             $table->longText('media_url')->nullable();
             $table->datetime('end_time')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('post_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('type_name')->unique();
             $table->timestamps();
         });
 
