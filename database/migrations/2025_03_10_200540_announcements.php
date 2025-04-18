@@ -118,7 +118,7 @@ return new class extends Migration
             $table->string('type_name')->unique();
             $table->timestamps();
         });
-        
+
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('communities_id')->nullable()->constrained('communities')->nullOnDelete();
