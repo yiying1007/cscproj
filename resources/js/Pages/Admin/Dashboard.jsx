@@ -16,7 +16,7 @@ function Dashboard() {
     const labels = monthlyPostCounts.map(item => `${item.year}-${String(item.month).padStart(2, "0")}`);
     const postCounts = monthlyPostCounts.map(item => item.post_count);
     const userCounts = monthlyUserCounts.map(item => item.user_count);
-
+    
     // post data
     const postChartData = {
         labels,
@@ -44,8 +44,7 @@ function Dashboard() {
             }
         ]
     };
-
-    // 【📊 Chart Options】
+    // Chart Options
     const chartOptions = {
         responsive: true,
         plugins: {
@@ -66,18 +65,19 @@ function Dashboard() {
         },
         scales: {
             x: {
+                type: "category",
                 beginAtZero: true,
                 ticks: {
                     font: { size: 14 }
                 },
-                grid: { display: false } // 隐藏 X 轴网格线
+                grid: { display: false } 
             },
             y: {
                 beginAtZero: true,
                 ticks: {
                     font: { size: 14 }
                 },
-                grid: { display: false } // 隐藏 Y 轴网格线
+                grid: { display: false } 
             }
         }
     };

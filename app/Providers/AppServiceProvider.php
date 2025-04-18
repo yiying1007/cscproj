@@ -28,5 +28,9 @@ class AppServiceProvider extends ServiceProvider
 
             return new MultiSessionHandler($connection, $table, $lifetime, $app);
         });
+
+        if (env('APP_ENV') == 'production') {
+            $this->app['request']->server->set('HTTPS', true);
+        }
     }
 }
