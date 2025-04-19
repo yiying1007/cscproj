@@ -12,7 +12,7 @@ ENV WEBROOT=/var/www/html/public
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Composer install with debug
-RUN composer install --no-dev --verbose
+#RUN composer install --no-dev --verbose
 
 # Laravel config caching (optional)
 RUN php artisan config:cache && php artisan route:cache
