@@ -1,23 +1,23 @@
 FROM richarvey/nginx-php-fpm:1.7.2
-
-# Set working directory
+ 
+ COPY . .
+ 
+ # Image config
+ # ENV SKIP_COMPOSER 1
+ ENV WEBROOT /var/www/html/public
+ ENV PHP_ERRORS_STDERR 1
+ ENV RUN_SCRIPTS 1
+ ENV REAL_IP_HEADER 1
+ 
+ # Laravel config
+ ENV APP_ENV production
+ ENV APP_DEBUG false
+ ENV LOG_CHANNEL stderr
+ 
+ # Allow composer to run as root
+ ENV COMPOSER_ALLOW_SUPERUSER 1
+ 
 WORKDIR /var/www/html
 
-# Copy everything into the container
-COPY . .
 
-# Set envs
-ENV PHP_ERRORS_STDERR=1
-ENV WEBROOT=/var/www/html/public
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-# Composer install with debug
-#RUN composer install --no-dev --verbose
-
-# Laravel config caching (optional)
-RUN php artisan config:cache && php artisan route:cache
-
-# Run migrations
-RUN php artisan migrate --force || true
-
-CMD ["/start.sh"]
+ CMD ["/start.sh"]
