@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+echo ">>> Laravel deploy script is running"
+
 echo "Running composer"
 composer install --no-dev --working-dir=/var/www/html
 

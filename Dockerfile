@@ -17,4 +17,6 @@ FROM richarvey/nginx-php-fpm:1.7.2
  # Allow composer to run as root
  ENV COMPOSER_ALLOW_SUPERUSER 1
  
+ RUN composer install --no-dev --working-dir=/var/www/html
+
  CMD ["/start.sh"]
