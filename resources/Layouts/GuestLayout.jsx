@@ -1,4 +1,4 @@
-import { GuestHeader,AdminGuestHeader } from "../js/Pages/Components/Header";
+import { GuestHeader,AdminGuestHeader,GuestBottom } from "../js/Pages/Components/Header";
 import FlashMessage from "../js/Pages/Components/MessageComponent";
 
 function AdminLayout({ children }) {
@@ -26,6 +26,7 @@ function UserWelcomeLayout({ children }) {
             <GuestHeader /> 
             <FlashMessage />
             <main>{children}</main>
+            <GuestBottom /> 
         </div>
     );
 }

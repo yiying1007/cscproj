@@ -25,9 +25,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ChatManagementController;
 use App\Http\Controllers\WordSensitiveController;
 
+Route::middleware('guest')->group(function () {
+    Route::get('/', fn() => Inertia::render('User/Welcome'))->name('user.welcome');
+});
 Route::prefix('User')->middleware('guest')->group(function () {
-    Route::get('/', [UserController::class, 'showLoginComponent']);
-    Route::get('/Welcome', fn() => Inertia::render('User/Welcome'))->name('user.welcome');
     Route::get('/Login', [UserController::class, 'showLoginComponent'])->name('user.login');
     Route::post('/Login', [UserController::class, 'accountLogin']);
     Route::get('/Register', [UserController::class, 'showRegisterComponent'])->name('user.register');

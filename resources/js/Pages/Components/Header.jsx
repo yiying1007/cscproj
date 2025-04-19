@@ -28,6 +28,19 @@ function GuestHeader(){
         </header>
     );
 }
+
+function GuestBottom(){
+    return(
+        <header className="client-header-color">
+                    <Link className="headerLink" style={{display:"flex",alignItems:"end"}} href={route('admin.login')}>
+                        <img src="https://fypcscproject.s3.ap-southeast-1.amazonaws.com/otherImage/logosegi.png" style={{width:"40px"}} />
+                        <h6>SEGiSpace Admin panel</h6>
+                    </Link>
+                
+        </header>
+    );
+}
+
 function AdminGuestHeader(){
     return(
         <header className="client-header-color">
@@ -204,4 +217,4 @@ function UserSmallHeader(){
     );
 }
 
-export {GuestHeader,AdminGuestHeader,AdminHeader,UserHeader,UserSmallHeader};
+export {GuestHeader,AdminGuestHeader,AdminHeader,UserHeader,UserSmallHeader,GuestBottom};
