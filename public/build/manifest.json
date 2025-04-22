@@ -1,0 +1,42 @@
+{
+  "_pusher-Dm9kDm3h.js": {
+    "file": "assets/pusher-Dm9kDm3h.js",
+    "name": "pusher"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-CJNAOzHR.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/mobileScreen.css": {
+    "file": "assets/mobileScreen-DfNml-ZF.css",
+    "src": "resources/css/mobileScreen.css",
+    "isEntry": true
+  },
+  "resources/css/tabletScreen.css": {
+    "file": "assets/tabletScreen-CqZ-wXKA.css",
+    "src": "resources/css/tabletScreen.css",
+    "isEntry": true
+  },
+  "resources/js/App.jsx": {
+    "file": "assets/App-BYoMk-SX.js",
+    "name": "App",
+    "src": "resources/js/App.jsx",
+    "isEntry": true,
+    "imports": [
+      "_pusher-Dm9kDm3h.js"
+    ],
+    "css": [
+      "assets/App-H5-Mg-QO.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-Ds-fVIWx.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_pusher-Dm9kDm3h.js"
+    ]
+  }
+}
