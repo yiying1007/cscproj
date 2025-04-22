@@ -1,5 +1,5 @@
 import React from 'react';
-import { AdminLayout } from '../../../Layouts/clientLayout';
+import { AdminLayout } from '../../../Layouts/ClientLayout';
 import { usePage } from '@inertiajs/react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";

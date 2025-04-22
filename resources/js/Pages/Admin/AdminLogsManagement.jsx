@@ -1,4 +1,4 @@
-import { AdminLayout } from '../../../Layouts/clientLayout';
+import { AdminLayout } from '../../../Layouts/ClientLayout';
 import { usePage } from '@inertiajs/react';
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
