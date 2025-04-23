@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->unique(); 
             $table->string('email')->unique();
             $table->string('password'); 
-            $table->enum('gender', ['Female', 'Male']); 
+            $table->enum('gender', ['Female', 'Male'])->nullable(); 
             $table->enum('position', ['Admin','Super Admin'])->default('Admin'); 
             $table->string('avatar')->default('avatar/defaultAdmin.png');
             $table->timestamps();
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('email')->unique(); 
             $table->string('password'); 
             $table->enum('gender', ['Female', 'Male'])->nullable(); 
-            $table->enum('position', ['Student', 'Lecture','Admin','Staff','Other']); 
+            $table->enum('position', ['Student', 'Lecture','Admin','Staff','Other'])->nullable(); 
             $table->string('intro')->nullable()->default('This user is very aloof and did not leave a personal signature'); 
             $table->string('avatar')->nullable()->default('avatar/defaultAvatar.png');
             $table->timestamp('createtime')->default(DB::raw('CURRENT_TIMESTAMP')); 
@@ -96,9 +96,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->enum('type', ['Official', 'Club','Normal']);
+            $table->enum('type', ['Official', 'Club','Normal'])->default('Normal');
             $table->foreignId('created_by')->constrained('users');
-            $table->enum('is_private', ['Public', 'Private']);
+            $table->enum('is_private', ['Public', 'Private'])->default('Public');
             $table->string('avatar')->default('avatar/defaultCommunity.png');
             $table->enum('status', ['Active', 'Block'])->default('Active');
             $table->timestamps();
