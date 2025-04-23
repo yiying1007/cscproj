@@ -25,10 +25,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ChatManagementController;
 use App\Http\Controllers\WordSensitiveController;
 
-Route::middleware('guest')->group(function () {
+Route::middleware('verifiedUser')->group(function () {
     Route::get('/', fn() => Inertia::render('User/Welcome'))->name('user.welcome');
 });
-Route::prefix('User')->middleware('guest')->group(function () {
+Route::prefix('User')->middleware('verifiedUser')->group(function () {
     Route::get('/Login', [UserController::class, 'showLoginComponent'])->name('user.login');
     Route::post('/Login', [UserController::class, 'accountLogin']);
     Route::get('/Register', [UserController::class, 'showRegisterComponent'])->name('user.register');
@@ -40,7 +40,7 @@ Route::prefix('User')->middleware('guest')->group(function () {
     
 });
 
-Route::prefix('Admin')->middleware('guest')->group(function () {
+Route::prefix('Admin')->middleware('verifiedAdmin')->group(function () {
     Route::get('/Login', [AdminController::class, 'showLoginComponent'])->name('admin.login');
     Route::post('/Login', [AdminController::class, 'accountLogin']);
 });

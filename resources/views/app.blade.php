@@ -20,7 +20,7 @@
     <!--update realtime-->
     @viteReactRefresh 
     <!--Introduce CSS and JS file through Vite -->
-    @vite(['resources/js/App.jsx','resources/css/mobileScreen.css','resources/css/tabletScreen.css', "resources/js/Pages/{$page['component']}.jsx"])
+    @vite('resources/js/App.jsx')
     <!--Used for Inertia.js page rendering.-->
     @inertiaHead
   </head>

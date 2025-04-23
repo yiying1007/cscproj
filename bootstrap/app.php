@@ -7,6 +7,8 @@ use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\User;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\EnsureUserIsVerified;
+use App\Http\Middleware\VerifiedUser;
+use App\Http\Middleware\VerifiedAdmin;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -25,6 +27,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin'=> Admin::class,
             'auth'=>User::class,
             'verified'=>EnsureUserIsVerified::class,
+            'verifiedUser'=>VerifiedUser::class,
+            'verifiedAdmin'=>VerifiedAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
