@@ -31,23 +31,21 @@ class DashboardController extends Controller
         $totalPosts=Post::count();
         // Monthly post counts for chart
         $monthlyPostCounts = Post::select(
-            DB::raw('YEAR(created_at) as year'),
-            DB::raw('MONTH(created_at) as month'),
+            DB::raw('EXTRACT(YEAR FROM created_at) as year'),
+            DB::raw('EXTRACT(MONTH FROM created_at) as month'),
             DB::raw('COUNT(*) as post_count')
         )
-        ->groupBy('year', 'month')
-        ->orderBy('year', 'desc')
-        ->orderBy('month', 'asc')
+        ->groupByRaw('EXTRACT(YEAR FROM created_at), EXTRACT(MONTH FROM created_at)')
+        ->orderByRaw('EXTRACT(YEAR FROM created_at) DESC, EXTRACT(MONTH FROM created_at) ASC')
         ->get();
         // Monthly post counts for chart
         $monthlyUserCounts = User::select(
-            DB::raw('YEAR(createtime) as year'),
-            DB::raw('MONTH(createtime) as month'),
+            DB::raw('EXTRACT(YEAR FROM createtime) as year'),
+            DB::raw('EXTRACT(MONTH FROM createtime) as month'),
             DB::raw('COUNT(*) as user_count')
         )
-        ->groupBy('year', 'month')
-        ->orderBy('year', 'desc')
-        ->orderBy('month', 'asc')
+        ->groupByRaw('EXTRACT(YEAR FROM createtime), EXTRACT(MONTH FROM createtime)')
+        ->orderByRaw('EXTRACT(YEAR FROM createtime) DESC, EXTRACT(MONTH FROM createtime) ASC')
         ->get()
         ->toArray();
         //top 5 communities
