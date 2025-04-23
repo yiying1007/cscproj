@@ -142,7 +142,7 @@ class UserController extends Controller
         
 
         //verify data with database,if account exist then login
-        if (Auth::guard('web')->attempt(['email' => $data['email'], 'password' => $data['password'],'acc_status'=>'active'])) {
+        if (Auth::guard('web')->attempt(['email' => $data['email'], 'password' => $data['password'],'acc_status'=>'Active'])) {
             
             //generate new user's session
             $request->session()->regenerate();
@@ -178,7 +178,7 @@ class UserController extends Controller
             'nickname' => $data['nickname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'acc_status'=> "active",
+            'acc_status'=> "Active",
             'avatar' => $defaultAvatarPath,
         ]);
 

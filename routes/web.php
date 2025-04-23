@@ -81,7 +81,7 @@ Route::prefix('User')->middleware('auth', 'verified')->group(function () {
     Route::delete('/UserList/TargetUserProfile/Delete/{id}', [FriendshipsController::class, 'deleteTargetFriend'])->name('user.deleteTargetFriend');
 
     // notification
-    Route::get('/api/Notifications', [NotificationsController::class, 'showNotificationComponent'])->name('user.notifications');
+    Route::get('/api/Notifications', [NotificationsController::class, 'showNotificationComponent'])->name('user.notifications')->withoutMiddleware('verified');
     Route::post('/Notifications/Read', [NotificationsController::class, 'markAsRead'])->name('user.markAsRead');
     Route::delete('/Notifications/Clear', [NotificationsController::class, 'clearAll'])->name('user.clearAllNotice');
 
@@ -140,7 +140,7 @@ Route::prefix('User')->middleware('auth', 'verified')->group(function () {
     Route::post('/DeleteChat/{chatId}', [ChatController::class, 'deleteChat'])->name('user.deleteChat');
     Route::post('/DeleteHistoryMessage/{chatId}', [ChatController::class, 'deleteHistoryMessage'])->name('user.deleteHistoryMessage');
     Route::post('/CreateChat/{user_id}', [ChatController::class, 'createChat'])->name('user.createChat');
-    Route::get('/api/UnreadMessageNotice', [ChatController::class, 'showUnreadMessageNotice'])->name('user.unreadMessageNotice');
+    Route::get('/api/UnreadMessageNotice', [ChatController::class, 'showUnreadMessageNotice'])->name('user.unreadMessageNotice')->withoutMiddleware('verified');
     Route::post('/ChatMessage/ReportMessage/{messageId}', [ChatController::class, 'reportMessage'])->name('user.reportChat');
 });
 

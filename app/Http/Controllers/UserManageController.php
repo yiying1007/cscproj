@@ -80,7 +80,7 @@ class UserManageController extends Controller
             'nickname' => $data['nickname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'acc_status'=> "active",
+            'acc_status'=> "Active",
             'avatar' => $defaultAvatarPath,
             'gender' => $data['gender'] ?? null,
             'position' => $data['position'],
