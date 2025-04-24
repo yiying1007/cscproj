@@ -104,10 +104,12 @@ class DashboardController extends Controller
             DB::raw('COUNT(DISTINCT likes.id) as like_count'),
             DB::raw('COUNT(DISTINCT comments.id) as comment_count')
         )
-        ->leftJoin('likes', 'posts.id', '=', 'likes.content_id')
-        ->where('likes.content_type', 'post')
+        ->leftJoin('likes', function ($join) {
+            $join->on('posts.id', '=', 'likes.content_id')
+                 ->where('likes.content_type', 'post');
+        })
         ->leftJoin('comments', 'posts.id', '=', 'comments.post_id')
-        //->whereDate('posts.created_at', Carbon::now('Asia/Kuala_Lumpur')->toDateString())
+        ->whereDate('posts.created_at', Carbon::now('Asia/Kuala_Lumpur')->toDateString())
         ->groupBy('posts.id', 'posts.title')
         ->orderByDesc(DB::raw('COUNT(DISTINCT likes.id) + COUNT(DISTINCT comments.id)')) 
         ->limit(5)
