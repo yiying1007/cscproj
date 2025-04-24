@@ -509,12 +509,12 @@ hr{
   height: 150px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  object-fit:fill;
+  object-fit: cover;
  }
  .avatarSmall{
   width: 50px;
   height: 50px;
-  object-fit: fill;
+  object-fit: cover;
  }
  .avatarMedium{
   width: 60px;
@@ -529,7 +529,7 @@ hr{
   height: 35px;
   border-radius: 50%;
   border: 1px solid #F0BB78;
-  object-fit:fill;
+  object-fit: cover;
  }
  .avatarHeader:hover{
   border: 2px solid;

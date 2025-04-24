@@ -55,11 +55,12 @@ return new class extends Migration
         });
 
         Schema::create('friendships', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('friend_id')->constrained('users')->onDelete('cascade');
             $table->enum('status', ['Pending', 'Accepted', 'Rejected'])->default('Pending');
             $table->timestamps();
-            $table->primary(['user_id', 'friend_id']);
+            $table->unique(['user_id', 'friend_id']);
         });
 
         Schema::create('chats', function (Blueprint $table) {
@@ -71,13 +72,14 @@ return new class extends Migration
         });
 
         Schema::create('chat_members', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('chat_id')->constrained('chats')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->enum('messageStatus', ['Active', 'Inactive'])->default('Active');
+            $table->enum('message_status', ['Active', 'Inactive'])->default('Active');
             $table->enum('position', ['Member', 'Admin'])->default('Member'); // 群聊时的角色
             $table->datetime('message_status_updated')->nullable();
             $table->timestamps();
-            $table->primary(['chat_id', 'user_id']);
+            $table->unique(['chat_id', 'user_id']);
         });
 
         Schema::create('messages', function (Blueprint $table) {
@@ -105,12 +107,13 @@ return new class extends Migration
         });
 
         Schema::create('community_members', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('communities_id')->constrained('communities')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->enum('position', ['Member', 'Admin','Leader'])->default('Member');
             $table->enum('status', ['Pending', 'Accepted', 'Rejected'])->default('Accepted');
             $table->timestamps();
-            $table->primary(['communities_id', 'user_id']);
+            $table->unique(['communities_id', 'user_id']);
         });
 
         Schema::create('post_types', function (Blueprint $table) {
@@ -128,8 +131,9 @@ return new class extends Migration
             $table->longText('media_url')->nullable();
             $table->foreignId('type_id')->nullable()->constrained('post_types')->nullOnDelete();
             $table->datetime('event_start_time')->nullable();
+            $table->datetime('event_end_time')->nullable();
             $table->enum('is_private', ['Public', 'Private'])->default('Public');
-            $table->boolean('is_top')->default(false);
+            //$table->boolean('is_top')->default(false);
             $table->enum('status', ['Active', 'Block'])->default('Active');
             $table->timestamps();
         });

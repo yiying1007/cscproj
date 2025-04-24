@@ -246,7 +246,7 @@ class CommunitiesManageController extends Controller
         //is report exist
         $reportExist=Report::where('content_type','Community')
                             ->where('content_id',$communityId)
-                            ->where('user_id',$community->user_id)
+                            ->where('user_id',$community->created_by)
                             ->exists();
         if($reportExist){
             return back()->with('error', 'Community Report exist!');
@@ -254,7 +254,7 @@ class CommunitiesManageController extends Controller
         DB::transaction(function () use ($request,$communityId,$data,$community,$admin){
             //create record
             Report::create([
-                'user_id' => $community->user_id,
+                'user_id' => $community->created_by,
                 'content_type' => 'Community',
                 'content_id' => $communityId,
                 'reason' => $data['reason'],
@@ -308,17 +308,22 @@ class CommunitiesManageController extends Controller
     public function showMemberManagementComponent($communityId){
         $community=Communities::findOrFail($communityId);
         //get members
-        $members=CommunityMembers::where('communities_id',$communityId)
-                                ->where('status','Accepted')
-                                ->join('users','community_members.user_id','=','users.id')
-                                ->select('users.id', 
-                                        'users.nickname', 
-                                        'users.avatar', 
-                                        'users.position as user_position',
-                                        'community_members.communities_id',
-                                        'community_members.position as member_position') 
-                                ->orderByRaw("FIELD(community_members.position, 'Leader','Admin', 'Member')")
-                                ->get();
+        $members = CommunityMembers::where('communities_id', $communityId)
+            ->where('status', 'Accepted')
+            ->join('users', 'community_members.user_id', '=', 'users.id')
+            ->select('users.id',
+                'users.nickname',
+                'users.avatar',
+                'users.position as user_position',
+                'community_members.communities_id',
+                'community_members.position as member_position')
+            ->orderByRaw("CASE 
+                WHEN community_members.position = 'Leader' THEN 1 
+                WHEN community_members.position = 'Admin' THEN 2 
+                WHEN community_members.position = 'Member' THEN 3 
+                ELSE 4 
+            END")
+            ->get();
         // get all member id
         $memberUserIds = CommunityMembers::where('communities_id', $communityId)
                                         ->where('status', 'Accepted')

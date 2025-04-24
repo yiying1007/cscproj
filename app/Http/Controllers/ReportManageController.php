@@ -24,25 +24,25 @@ class ReportManageController extends Controller
     //show post report
     public function showPostReportManagementComponent(){
         
-        $postReports=Report::leftJoin('users','reports.user_id','=','users.id')
-                    ->leftJoin('admins','admins.id','=','reports.reviewed_by')
-                    ->leftJoin('posts','posts.id','=','reports.content_id')
-                    ->leftJoin('identity_verifications', 'identity_verifications.user_id', '=', 'users.id')
-                    ->select('reports.*',
-                            'users.position',
-                            'users.acc_violation_count',
-                            'users.acc_status',
-                            'identity_verifications.name as user_name',
-                            'identity_verifications.email as segi_email',
-                            'identity_verifications.course',
-                            'posts.title',
-                            'posts.content',
-                            'posts.media_url',
-                            'admins.name as admin_name')
-                    ->where('content_type','Post')
-                    ->orderByRaw("FIELD(reports.status, 'Pending')DESC")
-                    ->orderBy('reports.updated_at', 'DESC') 
-                    ->get();
+        $postReports = Report::leftJoin('users','reports.user_id','=','users.id')
+            ->leftJoin('admins','admins.id','=','reports.reviewed_by')
+            ->leftJoin('posts','posts.id','=','reports.content_id')
+            ->leftJoin('identity_verifications', 'identity_verifications.user_id', '=', 'users.id')
+            ->select('reports.*',
+                'users.position',
+                'users.acc_violation_count',
+                'users.acc_status',
+                'identity_verifications.name as user_name',
+                'identity_verifications.email as segi_email',
+                'identity_verifications.course',
+                'posts.title',
+                'posts.content',
+                'posts.media_url',
+                'admins.name as admin_name')
+            ->where('content_type','Post')
+            ->orderByRaw("CASE WHEN reports.status = 'Pending' THEN 1 ELSE 2 END DESC")
+            ->orderBy('reports.updated_at', 'DESC')
+            ->get();
         
         
         return Inertia('Admin/ReportManage/PostReportManagement', [
@@ -52,26 +52,26 @@ class ReportManageController extends Controller
     //show community report
     public function showCommunityReportManagementComponent(){
         
-        $communityReports=Report::leftJoin('users','reports.user_id','=','users.id')
-                    ->leftJoin('admins','admins.id','=','reports.reviewed_by')
-                    ->leftJoin('communities','communities.id','=','reports.content_id')
-                    ->leftJoin('identity_verifications', 'identity_verifications.user_id', '=', 'users.id')
-                    ->select('reports.*',
-                            'users.position',
-                            'users.acc_violation_count',
-                            'users.acc_status',
-                            'identity_verifications.name as user_name',
-                            'identity_verifications.email as segi_email',
-                            'identity_verifications.course',
-                            'communities.name as community_name',
-                            'communities.type as community_type',
-                            'communities.description',
-                            'communities.avatar',
-                            'admins.name as admin_name')
-                    ->where('content_type','Community')
-                    ->orderByRaw("FIELD(reports.status, 'Pending')DESC")
-                    ->orderBy('reports.updated_at', 'DESC') 
-                    ->get();
+        $communityReports = Report::leftJoin('users','reports.user_id','=','users.id')
+            ->leftJoin('admins','admins.id','=','reports.reviewed_by')
+            ->leftJoin('communities','communities.id','=','reports.content_id')
+            ->leftJoin('identity_verifications', 'identity_verifications.user_id', '=', 'users.id')
+            ->select('reports.*',
+                'users.position',
+                'users.acc_violation_count',
+                'users.acc_status',
+                'identity_verifications.name as user_name',
+                'identity_verifications.email as segi_email',
+                'identity_verifications.course',
+                'communities.name as community_name',
+                'communities.type as community_type',
+                'communities.description',
+                'communities.avatar',
+                'admins.name as admin_name')
+            ->where('content_type','Community')
+            ->orderByRaw("CASE WHEN reports.status = 'Pending' THEN 1 ELSE 2 END DESC")
+            ->orderBy('reports.updated_at', 'DESC')
+            ->get();
                     
         return Inertia('Admin/ReportManage/CommunityReportManagement', [
             'communityReports' => $communityReports,
@@ -81,23 +81,23 @@ class ReportManageController extends Controller
     //show comment report
     public function showCommentReportManagementComponent(){
         
-        $commentReports=Report::leftJoin('users','reports.user_id','=','users.id')
-                    ->leftJoin('admins','admins.id','=','reports.reviewed_by')
-                    ->leftJoin('comments','comments.id','=','reports.content_id')
-                    ->leftJoin('identity_verifications', 'identity_verifications.user_id', '=', 'users.id')
-                    ->select('reports.*',
-                            'users.position',
-                            'users.acc_violation_count',
-                            'users.acc_status',
-                            'identity_verifications.name as user_name',
-                            'identity_verifications.email as segi_email',
-                            'identity_verifications.course',
-                            'comments.content',
-                            'admins.name as admin_name')
-                    ->where('content_type','Comment')
-                    ->orderByRaw("FIELD(reports.status, 'Pending')DESC")
-                    ->orderBy('reports.updated_at', 'DESC') 
-                    ->get();
+        $commentReports = Report::leftJoin('users','reports.user_id','=','users.id')
+            ->leftJoin('admins','admins.id','=','reports.reviewed_by')
+            ->leftJoin('comments','comments.id','=','reports.content_id')
+            ->leftJoin('identity_verifications', 'identity_verifications.user_id', '=', 'users.id')
+            ->select('reports.*',
+                'users.position',
+                'users.acc_violation_count',
+                'users.acc_status',
+                'identity_verifications.name as user_name',
+                'identity_verifications.email as segi_email',
+                'identity_verifications.course',
+                'comments.content',
+                'admins.name as admin_name')
+            ->where('content_type','Comment')
+            ->orderByRaw("CASE WHEN reports.status = 'Pending' THEN 1 ELSE 2 END DESC")
+            ->orderBy('reports.updated_at', 'DESC')
+            ->get();
         
         return Inertia('Admin/ReportManage/CommentReportManagement', [
             'commentReports' => $commentReports,
@@ -107,25 +107,25 @@ class ReportManageController extends Controller
     //show chat report
     public function showChatReportManagementComponent(){
         
-        $chatReports=Report::leftJoin('users','reports.user_id','=','users.id')
-                    ->leftJoin('admins','admins.id','=','reports.reviewed_by')
-                    ->leftJoin('messages','messages.id','=','reports.content_id')
-                    ->leftJoin('identity_verifications', 'identity_verifications.user_id', '=', 'users.id')
-                    ->select('reports.*',
-                            'users.position',
-                            'users.acc_violation_count',
-                            'users.acc_status',
-                            'identity_verifications.name as user_name',
-                            'identity_verifications.email as segi_email',
-                            'identity_verifications.course',
-                            'messages.content',
-                            'messages.media_url',
-                            'messages.media_name',
-                            'admins.name as admin_name')
-                    ->where('content_type','Chat')
-                    ->orderByRaw("FIELD(reports.status, 'Pending')DESC")
-                    ->orderBy('reports.updated_at', 'DESC') 
-                    ->get();
+        $chatReports = Report::leftJoin('users','reports.user_id','=','users.id')
+            ->leftJoin('admins','admins.id','=','reports.reviewed_by')
+            ->leftJoin('messages','messages.id','=','reports.content_id')
+            ->leftJoin('identity_verifications', 'identity_verifications.user_id', '=', 'users.id')
+            ->select('reports.*',
+                'users.position',
+                'users.acc_violation_count',
+                'users.acc_status',
+                'identity_verifications.name as user_name',
+                'identity_verifications.email as segi_email',
+                'identity_verifications.course',
+                'messages.content',
+                'messages.media_url',
+                'messages.media_name',
+                'admins.name as admin_name')
+            ->where('content_type','Chat')
+            ->orderByRaw("CASE WHEN reports.status = 'Pending' THEN 1 ELSE 2 END DESC")
+            ->orderBy('reports.updated_at', 'DESC')
+            ->get();
         
         
         return Inertia('Admin/ReportManage/ChatReportManagement', [
