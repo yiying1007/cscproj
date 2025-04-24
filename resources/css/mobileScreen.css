@@ -92,5 +92,8 @@
     .message-media-preview img{
         object-fit: contain;
     }
+    .audio-container audio{
+        width: 100%;
+    }
   }
   
