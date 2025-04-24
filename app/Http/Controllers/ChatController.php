@@ -307,7 +307,16 @@ class ChatController extends Controller
             $path = Storage::disk('s3')->putFile('messageMedia', $media, 'public');
             $mediaUrl = Storage::disk('s3')->url($path);
         }
-
+        $receiver=ChatMember::where('chat_id',$request->chat_id)
+                    ->where('user_id','!=',$user->id)
+                    ->first();
+        if ($receiver->message_status === 'Inactive') {
+            ChatMember::where('chat_id', $request->chat_id)
+            ->where('user_id', '!=', $user->id)
+            ->update([
+                'message_status' => 'Active'
+            ]);
+        }
         $message=Message::create([
             'content' => $request->content,
             'chat_id' => $request->chat_id,
