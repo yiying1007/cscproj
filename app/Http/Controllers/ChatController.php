@@ -26,18 +26,21 @@ class ChatController extends Controller
         $userId=auth()->user()->id;
 
         //show chat relate with current user
+        $defaultDate = '1970-01-01 00:00:00';
+        $coalesce = DB::getDriverName() === 'pgsql' ? 'COALESCE' : 'IFNULL';
+
         $chatList = Chat::whereHas('members', function ($query) use ($userId) {
             $query->where('user_id', $userId)
-                ->where('message_status', 'Active'); // 只显示活跃的聊天
+                ->where('message_status', 'Active');
         })
         ->with([
-            'latestMessage' => function ($query) use ($userId) {
-                $query->whereIn('chat_id', function ($subQuery) use ($userId) {
+            'latestMessage' => function ($query) use ($userId, $defaultDate, $coalesce) {
+                $query->whereIn('chat_id', function ($subQuery) use ($userId, $defaultDate, $coalesce) {
                     $subQuery->select('chat_id')
                         ->from('chat_members')
                         ->where('user_id', $userId)
                         ->whereColumn('chat_members.chat_id', 'messages.chat_id')
-                        ->whereRaw('messages.created_at > IFNULL(chat_members.message_status_updated, "1970-01-01 00:00:00")');
+                        ->whereRaw("messages.created_at > {$coalesce}(chat_members.message_status_updated, ?)", [$defaultDate]);
                 });
             },
             'latestMessage.sender',
@@ -51,6 +54,7 @@ class ChatController extends Controller
         )
         ->select('chats.*')
         ->paginate(9);
+
         
         //show friend list(create chat)
         $friendIds = Friendships::where(function ($query) use ($userId) {
