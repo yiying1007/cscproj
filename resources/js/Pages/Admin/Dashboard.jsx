@@ -155,7 +155,7 @@ function Dashboard() {
                             </table>
                             </div>
                             <div className='table-container'>
-                            <h5 className='dashboard-label'>Today's Top 5 Hot Posts</h5>
+                            <h5 className='dashboard-label'>Top 5 Hot Posts</h5>
                             <table className="table dashboard-table">
                                 <thead className="thead-dark">
                                     <tr>
