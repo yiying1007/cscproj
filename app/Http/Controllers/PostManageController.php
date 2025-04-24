@@ -26,17 +26,13 @@ class PostManageController extends Controller
     public function showPostManagementComponent(){
         //all post
         $posts = Post::leftJoin('users','users.id','=','posts.user_id')
-                    ->leftJoin('communities', 'posts.communities_id', '=', 'communities.id')
                     ->leftJoin('post_types','post_types.id','=','posts.type_id')
-                    ->leftJoin('comments', 'posts.id', '=', 'comments.post_id')
                     ->select(
                         'posts.*',
                         'users.nickname',
                         'users.position',
                         'users.avatar',
-                        'post_types.type_name',
-                        'communities.name as community_name',
-                        'comments.content as comment_content'
+                        'post_types.type_name'
                     )
                     ->latest()
                     ->get();

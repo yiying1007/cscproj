@@ -121,6 +121,10 @@ class UserManageController extends Controller
         } else {
             $data['admin_id'] = null;
         }
+        //check user position
+        if($user->position === "Admin" && $data['position'] !== "Admin"){
+            $data['admin_id'] = null;
+        }
         //block status
         if ($data['acc_status'] === "Block") {
             $request->validate([

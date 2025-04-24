@@ -113,7 +113,10 @@ class UserIdentityManageController extends Controller
         //check user position 
         if (!empty($data['user_id'])) {
             $user = User::findOrFail($data['user_id']);
-        
+            if($user->position === "Admin" && $user->position !== $data['role']) {
+                User::where('id', $user->id)
+                    ->update(['admin_id' => null]);
+            }
             if ($user->position != $data['role']) {
                 User::where('id', $user->id)
                     ->update(['position' => $data['role']]);
