@@ -127,10 +127,11 @@ class CommunitiesController extends Controller
                                         'users.position as user_position', 
                                         'community_members.communities_id',
                                         'community_members.position as member_position')
-                                        ->orderByRaw("CASE 
-                                        WHEN community_members.position = 'Admin' THEN 1 
-                                        WHEN community_members.position = 'Member' THEN 2 
-                                        ELSE 3 
+                                ->orderByRaw("CASE 
+                                        WHEN community_members.position = 'Leader' THEN 1 
+                                        WHEN community_members.position = 'Admin' THEN 2 
+                                        WHEN community_members.position = 'Member' THEN 3 
+                                        ELSE 4
                                     END")
                                 ->paginate(6);       
         //get member request list
