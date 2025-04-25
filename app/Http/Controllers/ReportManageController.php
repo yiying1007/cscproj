@@ -40,7 +40,12 @@ class ReportManageController extends Controller
                 'posts.media_url',
                 'admins.name as admin_name')
             ->where('content_type','Post')
-            ->orderByRaw("CASE WHEN reports.status = 'Pending' THEN 1 ELSE 2 END DESC")
+            ->orderByRaw("CASE 
+                WHEN reports.status = 'Pending' THEN 1 
+                WHEN reports.status = 'Approved' THEN 2 
+                WHEN reports.status = 'Rejected' THEN 3 
+                ELSE 4 
+            END")
             ->orderBy('reports.updated_at', 'DESC')
             ->get();
         
@@ -69,7 +74,12 @@ class ReportManageController extends Controller
                 'communities.avatar',
                 'admins.name as admin_name')
             ->where('content_type','Community')
-            ->orderByRaw("CASE WHEN reports.status = 'Pending' THEN 1 ELSE 2 END DESC")
+            ->orderByRaw("CASE 
+                WHEN reports.status = 'Pending' THEN 1 
+                WHEN reports.status = 'Approved' THEN 2 
+                WHEN reports.status = 'Rejected' THEN 3 
+                ELSE 4 
+            END")
             ->orderBy('reports.updated_at', 'DESC')
             ->get();
                     
@@ -95,7 +105,12 @@ class ReportManageController extends Controller
                 'comments.content',
                 'admins.name as admin_name')
             ->where('content_type','Comment')
-            ->orderByRaw("CASE WHEN reports.status = 'Pending' THEN 1 ELSE 2 END DESC")
+            ->orderByRaw("CASE 
+                WHEN reports.status = 'Pending' THEN 1 
+                WHEN reports.status = 'Approved' THEN 2 
+                WHEN reports.status = 'Rejected' THEN 3 
+                ELSE 4 
+            END")
             ->orderBy('reports.updated_at', 'DESC')
             ->get();
         
@@ -123,7 +138,12 @@ class ReportManageController extends Controller
                 'messages.media_name',
                 'admins.name as admin_name')
             ->where('content_type','Chat')
-            ->orderByRaw("CASE WHEN reports.status = 'Pending' THEN 1 ELSE 2 END DESC")
+            ->orderByRaw("CASE 
+                WHEN reports.status = 'Pending' THEN 1 
+                WHEN reports.status = 'Approved' THEN 2 
+                WHEN reports.status = 'Rejected' THEN 3 
+                ELSE 4 
+            END")
             ->orderBy('reports.updated_at', 'DESC')
             ->get();
         
