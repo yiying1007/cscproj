@@ -92,7 +92,7 @@ function AcceptReportModal({report}) {
         
         <Modal show={reportshow} onHide={handleReportClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Block Post</Modal.Title>
+                <Modal.Title>Block Chat</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form onSubmit={reportSubmit}>
