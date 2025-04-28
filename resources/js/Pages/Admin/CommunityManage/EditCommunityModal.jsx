@@ -170,7 +170,7 @@ function EditCommunityModal({community,users}){
                                 <h5>{user.nickname}</h5>
                                 <p>{user.position}</p>
                                 </div>
-                                <div>
+                                <div className="box-info-right">
                                     <button
                                         className="btn btn-primary btn-sm"
                                         onClick={() => handleSelectUser(user)}
