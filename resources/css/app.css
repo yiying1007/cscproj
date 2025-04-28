@@ -15,7 +15,7 @@
     
   }
   body{
-    background-color: #FFF0DC;
+    background-color: #FFF0DC !important;
   }
   .client-body-container{
     background-color: #FFF0DC;
