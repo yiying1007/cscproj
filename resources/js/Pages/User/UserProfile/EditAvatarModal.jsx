@@ -3,29 +3,54 @@ import { Input,Button,InfoMessage } from "../../Components/FormComponent";
 //import MyModal from "../Components/Modal";
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import ImageView from "../../Components/ImageView";
 
 function EditAvatarModal(){
     
     //Modal OPEN/CLOSE
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => {
+        setShow(false);
+        clearErrors();
+        setFileError("");
+    };
+    const handleShow = () => {
+        handleCancelPreview();
+        setShow(true);
+    };
 
     const { auth } = usePage().props;
-    const { setData, post, processing,errors } = useForm({
+    const { setData, post, processing,errors,clearErrors } = useForm({
         avatar: auth.user.avatar,
     });
     const userAvatarUrl = `https://fypcscproject.s3.ap-southeast-1.amazonaws.com/${auth.user.avatar}`;
     //handle user avatar 
     const [avatarPreview, setAvatarPreview] = useState(`https://fypcscproject.s3.ap-southeast-1.amazonaws.com/${auth.user.avatar}`);
 
+    //manage error message state
+    const [fileError, setFileError] = useState("");
+    //view
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
+        const allowedTypes = ["image/jpg","image/jpeg", "image/png", "image/gif"];
+        let validFiles = true;
+        let errorMessage = "";
+        //check if file is valid
         if (file) {
-            setData('avatar', file); // 更新 avatar 字段的值为文件对象
-            setAvatarPreview(URL.createObjectURL(file)); // 预览上传的文件
+            if (!allowedTypes.includes(file.type)) {
+                validFiles = false;
+                errorMessage = "Only JPG, PNG, GIF images are allowed.";
+            } 
+        }
+        setFileError(errorMessage);
+        //if file is valid, set data and preview
+        if (validFiles === true) {
+            // update the value of the avatar field to the file object and view
+            setData('avatar', file); 
+            setAvatarPreview(URL.createObjectURL(file));
         }
     };
+
     const handleCancelPreview = () => {
         setAvatarPreview(
             `https://fypcscproject.s3.ap-southeast-1.amazonaws.com/${auth.user.avatar}`
@@ -58,15 +83,13 @@ function EditAvatarModal(){
                 </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={formSubmit} style={{display:"grid"}}>
-                        <img 
-                            src={avatarPreview} 
-                            alt="Your Avatar" 
-                            style={{ width: "100px", height: "100px",justifySelf:"center",objectFit:"cover" }}
-                        />
+                        <ImageView imageUrl={avatarPreview} cssClass="avatarPreview"/>
+                        {fileError && <p className="errorMessage">{fileError}</p>}
                         {errors.avatar && <InfoMessage className="errorMessage" message={errors.avatar}/>}
                         <div style={{display:'none'}}>
                             <Input 
                                 type="file" 
+                                accept="image/*"
                                 id="avatar" 
                                 name="avatar" 
                                 onChange={handleAvatarChange}

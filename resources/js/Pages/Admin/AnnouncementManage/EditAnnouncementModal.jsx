@@ -12,6 +12,11 @@ function EditAnnouncementModal({a}){
         setShow(false);
         clearErrors();
         reset();
+        setData({
+            name: a.name || "",
+            email: a.email || "",
+            password: "",
+        });
     };
     const handleShow = () => setShow(true);
 
@@ -29,6 +34,9 @@ function EditAnnouncementModal({a}){
         post(route('admin.editAnnouncement',a.id), {
             onSuccess: () => {
                 handleClose(); // close modal
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             },
           });
     }

@@ -13,6 +13,14 @@ function EditUserIdentityModal({identity,allUsers,users}){
         setShow(false);
         reset();
         clearErrors();
+        setData({
+            name: identity.name || "",
+            email: identity.email || "",
+            role: identity.role || "",
+            faculty: identity.faculty || "",
+            course: identity.course || "",
+            user_id: identity.user_id || "",
+        });
     };
     const handleShow = () => setShow(true);
 
@@ -52,6 +60,9 @@ function EditUserIdentityModal({identity,allUsers,users}){
         post(route('admin.editUserIdentity',identity.id), {
             onSuccess: () => {
                 handleClose(); // close modal
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             },
           });
     }
@@ -110,7 +121,7 @@ function EditUserIdentityModal({identity,allUsers,users}){
                             label="Faculty"
                             name="faculty"
                             id="faculty"
-                            value={data.faculty}
+                            value={data.faculty || ""}
                             onChange={(e) => setData('faculty', e.target.value)}        
                         >
                             <Option label="Select" value="" />
@@ -127,7 +138,7 @@ function EditUserIdentityModal({identity,allUsers,users}){
                             label="Course"
                             name="course"
                             id="course"
-                            value={data.course}
+                            value={data.course || ""}
                             onChange={(e) => setData('course', e.target.value)}        
                         >
                             <Option label="Select" value="" />

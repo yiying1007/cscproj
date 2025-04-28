@@ -7,6 +7,7 @@ import PostComponent from '../Post/Post';
 import { useEffect,useState } from 'react';
 import VerificationCard from '../PersonalVerificationCard';
 import AboutUser from './AboutUser';
+import ImageView from '../../Components/ImageView';
 
 function TargetUserProfile(){
     const { posts,hasMorePosts,user,friendStatus } = usePage().props;
@@ -41,7 +42,7 @@ function TargetUserProfile(){
             <div className='profile-info-container'>
                 <div className='profile-info-border'>
                 <div className='profile-info-left'>
-                    <img src={userAvatarUrl} className='avatarProfile' />
+                    <ImageView imageUrl={userAvatarUrl} cssClass="avatarProfile" />
                 </div>
                 <div className='profile-info-center'>
                     <h3>{user.nickname} {(user.gender != null && user.gender==="Female") && <i className='gender-icon bx bx-female-sign' style={{color:"#dc3545"}}></i>} {(user.gender != null && user.gender==="Male") && <i className='gender-icon bx bx-male-sign' style={{color:"#0d6efd"}}></i>} </h3>

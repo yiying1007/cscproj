@@ -10,6 +10,8 @@ function EditAdminModal({admin}){
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false);
+        reset();
+        clearErrors();
         setData({
             name: admin.name || "",
             email: admin.email || "",
@@ -21,7 +23,7 @@ function EditAdminModal({admin}){
     const handleShow = () => setShow(true);
 
     
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors,reset,clearErrors } = useForm({
         name: admin.name || "",
         email: admin.email || "",
         password: "",

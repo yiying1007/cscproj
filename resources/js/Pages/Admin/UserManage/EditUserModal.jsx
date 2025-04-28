@@ -33,6 +33,18 @@ function EditUserModal({user,allAdmins}){
         setShow(false);
         reset();
         clearErrors();
+        setData({
+            nickname: user.nickname || "",
+            email: user.email || "",
+            password: "",
+            gender: user.gender || "",
+            position: user.position || "Unknown",
+            intro: user.intro || "",
+            admin_id:user.admin_id || "",
+            acc_status: user.acc_status,
+            blockReason:"",
+            acc_block_until:user.acc_block_until || "",
+        });
     };
     const handleShow = () => setShow(true);
 

@@ -12,6 +12,9 @@ function EditTypeModal({type}){
         setShow(false);
         clearErrors();
         reset();
+        setData({
+            type_name: type.type_name || "",
+        });
     };
     const handleShow = () => setShow(true);
 
@@ -27,6 +30,9 @@ function EditTypeModal({type}){
         post(route('admin.editPostType',type.id), {
             onSuccess: () => {
                 handleClose(); // close modal
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             },
           });
     }

@@ -3,6 +3,8 @@ import { Input,Button,Select,Option,InfoMessage } from "../../Components/FormCom
 //import MyModal from "../Components/Modal";
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import ImageView from "../../Components/ImageView";
+
 
 function EditCommunityAvatarModal({community}){
     
@@ -10,27 +12,42 @@ function EditCommunityAvatarModal({community}){
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false);
-        setAvatarPreview(
-            `https://fypcscproject.s3.ap-sadminoutheast-1.amazonaws.com/${community.avatar}`
-        );
-        setData('avatar', null);
+        clearErrors();
+        setFileError("");
     };
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        handleCancelPreview();
+        setShow(true);
+    };
 
     
-    const { setData, post, processing,errors } = useForm({
+    const { setData, post, processing,errors,clearErrors } = useForm({
         avatar: community.avatar,
     });
     const communityAvatarUrl = `https://fypcscproject.s3.ap-southeast-1.amazonaws.com/${community.avatar}`;
     //handle user avatar 
     const [avatarPreview, setAvatarPreview] = useState(`https://fypcscproject.s3.ap-southeast-1.amazonaws.com/${community.avatar}`);
+    //manage error message state
+    const [fileError, setFileError] = useState("");
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
+        const allowedTypes = ["image/jpg","image/jpeg", "image/png", "image/gif"];
+        let validFiles = true;
+        let errorMessage = "";
+        //check if file is valid
         if (file) {
+            if (!allowedTypes.includes(file.type)) {
+                validFiles = false;
+                errorMessage = "Only JPG, PNG, GIF images are allowed.";
+            } 
+        }
+        setFileError(errorMessage);
+        //if file is valid, set data and preview
+        if (validFiles === true) {
             // update the value of the avatar field to the file object and view
             setData('avatar', file); 
-            setAvatarPreview(URL.createObjectURL(file)); 
+            setAvatarPreview(URL.createObjectURL(file));
         }
     };
     const handleCancelPreview = () => {
@@ -68,15 +85,13 @@ function EditCommunityAvatarModal({community}){
                 </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={formSubmit} style={{display:"grid"}}>
-                        <img 
-                            src={avatarPreview} 
-                            alt="Your Avatar" 
-                            style={{ width: "100px", height: "100px",justifySelf:"center" }}
-                        />
+                        <ImageView imageUrl={avatarPreview} cssClass="avatarPreview"/>
+                        {fileError && <p className="errorMessage">{fileError}</p>}
                         {errors.avatar && <InfoMessage className="errorMessage" message={errors.avatar}/>}
                         <div style={{display:'none'}}>
                             <Input 
                                 type="file" 
+                                accept="image/*"
                                 id="avatar" 
                                 name="avatar" 
                                 onChange={handleAvatarChange}

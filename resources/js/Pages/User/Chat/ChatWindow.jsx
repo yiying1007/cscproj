@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 import Modal from 'react-bootstrap/Modal';
 import { Button as Btn } from "../../Components/FormComponent";
 import ReportComponent from "../Post/Report";
+import ImageView from "../../Components/ImageView";
 
 function ChatWindow() {
     const {auth,messages: initialMessages = [],targetUser } = usePage().props;
@@ -101,12 +102,7 @@ function ChatWindow() {
         if (media.match(/\.(jpeg|jpg|gif|png)$/)) {
             return (
                 <div className="image-container">
-                    <img 
-                        src={media} 
-                        alt="post image" 
-                        className="chatImage"
-                        style={{ cursor: "pointer" }} 
-                    />
+                    <ImageView imageUrl={media} cssClass="chatImage" alt="post image" />
                 </div>
             );
         } else if (media.match(/\.(mp4|webm|mov|avi)$/)) {

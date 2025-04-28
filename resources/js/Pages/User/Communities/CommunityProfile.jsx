@@ -11,10 +11,10 @@ import PostComponent from '../Post/Post';
 import ReportComponent from '../Post/Report';
 import CommunityEdit from './CommunityEdit';
 import CommunityMember from './CommunityMember';
-
+import ImageView from '../../Components/ImageView';
 
 function CommunityProfile(){
-
+    const { auth } = usePage().props;
     const { posts,hasMorePosts,community,isMember={},isLeader,leader,memberCount } = usePage().props;
     const communityAvatarUrl = `https://fypcscproject.s3.ap-southeast-1.amazonaws.com/${community.avatar}`;
     const [communityProfileTab, setCommunityProfileTab] = useState(localStorage.getItem('communityProfileTab') || "all");
@@ -74,7 +74,7 @@ function CommunityProfile(){
             return(<EditAvatarModal community={community} />);
         }
         }
-        return(<img src={communityAvatarUrl} className='avatarProfile' />);
+        return(<ImageView imageUrl={communityAvatarUrl} cssClass="avatarProfile" />);
     }
 
     const actionButton = () => {
@@ -104,7 +104,10 @@ function CommunityProfile(){
                         
                     </h6>
                     <span>{community.description ?? "Still no description..."}</span>
-                    <Link className='profile-link' href={route("user.targetUserProfile", leader)}>
+                    <Link className='profile-link' href={
+                        community.created_by === auth.user.id 
+                        ? route("user.profile")
+                        : route("user.targetUserProfile", leader)}>
                         <img src={leaderAvatarUrl} className='avatarHeader' />
                     </Link>
                 </div>

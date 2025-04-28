@@ -137,7 +137,7 @@ function HomeIndex(){
                             return null;
                         })
                     ) : (
-                        <h6 className='info-message'>No Events</h6>
+                        <h6 className='info-message'></h6>
                     )}
                 </div>
 
@@ -201,7 +201,7 @@ function HomeIndex(){
                             return null;
                         })
                     ) : (
-                        <h6 className='info-message'>No Events</h6>
+                        <h6 className='info-message'></h6>
                     )}
                 </div>
 

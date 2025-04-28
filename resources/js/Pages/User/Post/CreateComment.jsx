@@ -1,6 +1,6 @@
 import { usePage, useForm } from "@inertiajs/react";
 import EmojiPicker from "emoji-picker-react";
-import { useState,useRef } from "react";
+import { useState,useRef,useEffect } from "react";
 import { Button } from "react-bootstrap";
 
 
@@ -22,6 +22,7 @@ function CreateComment({postDetail,comment=null}) {
     
     // emoji
     const inputRef = useRef(null);
+    const emojiPickerRef = useRef(null);
     const [showPicker, setShowPicker] = useState(false); 
 
     // insert Emoji to Cursor Position
@@ -44,9 +45,27 @@ function CreateComment({postDetail,comment=null}) {
             input.selectionStart = input.selectionEnd = start + emojiObject.emoji.length;
             input.focus();
         }, 0);
+        setShowPicker(false);
     };
 
-    
+    //click to close emoji box
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                emojiPickerRef.current &&
+                !emojiPickerRef.current.contains(event.target) &&
+                !event.target.classList.contains("emoji-icon") 
+            ) {
+                setShowPicker(false);
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
     function formSubmit(e) {
         e.preventDefault();
         submitPost(route("user.createComment"),{
@@ -80,10 +99,16 @@ function CreateComment({postDetail,comment=null}) {
                 value={data.content}
                 onChange={(e) => setData("content", e.target.value)}
             />
-            <i className='emoji-icon bx bxs-smile ' style={{fontSize:"20px"}} onClick={() => setShowPicker(!showPicker)}></i>
+            <i className='emoji-icon bx bxs-smile ' 
+                style={{fontSize:"20px"}} 
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setShowPicker(!showPicker);
+                }}
+            ></i>
             {/* show emoji picker */}
             {showPicker && (
-                <div style={{position: "absolute",right:"0",top:"55px",marginRight:"20px"}}>
+                <div className="emoji-comment-box" ref={emojiPickerRef} >
                     <EmojiPicker onEmojiClick={handleEmojiClick} />
                 </div>
             )}

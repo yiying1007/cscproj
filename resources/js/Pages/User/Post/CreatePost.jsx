@@ -1,7 +1,7 @@
 import { usePage, useForm } from "@inertiajs/react";
 import Form from 'react-bootstrap/Form';
 import { Button } from "react-bootstrap";
-import { useState,useRef } from "react";
+import { useState,useRef,useEffect } from "react";
 import Modal from 'react-bootstrap/Modal';
 import { InfoMessage } from "../../Components/FormComponent";
 import EmojiPicker from "emoji-picker-react";
@@ -40,45 +40,64 @@ function CreatePost({community=null}) {
     const handleShow = () => setShow(true);
 
     // emoji
-        const textAreaRef = useRef(null);
-        const titleRef = useRef(null); 
-        const [focusedField, setFocusedField] = useState("content"); 
+    const textAreaRef = useRef(null);
+    const titleRef = useRef(null); 
+    const emojiPickerRef = useRef(null);
+    const [focusedField, setFocusedField] = useState("content"); 
 
-        const [showPicker, setShowPicker] = useState(false); 
+    const [showPicker, setShowPicker] = useState(false); 
     
-        // insert Emoji to Cursor Position
-        const handleEmojiClick = (emojiObject) => {
-            const emoji = emojiObject.emoji;
+    // insert Emoji to Cursor Position
+    const handleEmojiClick = (emojiObject) => {
+        const emoji = emojiObject.emoji;
             
-            let input = null;
-            let currentValue = "";
-            let setValue = () => {};
+        let input = null;
+        let currentValue = "";
+        let setValue = () => {};
         
-            if (focusedField === "title" && titleRef.current) {
-                input = titleRef.current;
-                currentValue = data.title;
-                setValue = (val) => setData("title", val);
-            } else if (textAreaRef.current) {
-                input = textAreaRef.current;
-                currentValue = data.content;
-                setValue = (val) => setData("content", val);
+        if (focusedField === "title" && titleRef.current) {
+            input = titleRef.current;
+            currentValue = data.title;
+            setValue = (val) => setData("title", val);
+        } else if (textAreaRef.current) {
+            input = textAreaRef.current;
+            currentValue = data.content;
+            setValue = (val) => setData("content", val);
+        }
+        
+        if (!input) return;
+        
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const newText = currentValue.substring(0, start) + emoji + currentValue.substring(end);
+        
+        setValue(newText);
+        
+        // reset cursor
+        setTimeout(() => {
+            input.selectionStart = input.selectionEnd = start + emoji.length;
+            input.focus();
+        }, 0);
+        setShowPicker(false);
+    };
+
+     //click to close emoji box
+     useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                emojiPickerRef.current &&
+                !emojiPickerRef.current.contains(event.target) &&
+                !event.target.classList.contains("emoji-icon") 
+            ) {
+                setShowPicker(false);
             }
-        
-            if (!input) return;
-        
-            const start = input.selectionStart;
-            const end = input.selectionEnd;
-            const newText = currentValue.substring(0, start) + emoji + currentValue.substring(end);
-        
-            setValue(newText);
-        
-            // reset cursor
-            setTimeout(() => {
-                input.selectionStart = input.selectionEnd = start + emoji.length;
-                input.focus();
-            }, 0);
         };
-        
+
+        document.addEventListener("click", handleClickOutside);
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
         
     //manage error message state
     const [fileError, setFileError] = useState("");
@@ -93,7 +112,7 @@ function CreatePost({community=null}) {
         //set file limit
         const maxSize = 20 * 1024 * 1024; 
         //set file type allow
-        const allowedTypes = ["image/jpeg", "image/png", "image/gif", "video/mp4", "video/webm", "video/mov", "video/avi", "audio/mpeg", "audio/wav"];
+        const allowedTypes = ["image/jpg","image/jpeg", "image/png", "image/gif", "video/mp4", "video/webm", "video/mov", "video/avi", "audio/mpeg", "audio/wav"];
         let validFiles = [];
         let previews = [];
         let errorMessage = "";
@@ -306,10 +325,17 @@ function CreatePost({community=null}) {
                             {youtubeError && <p className="errorMessage">{youtubeError}</p>}
                             <hr />
                             <div className="actionStyle-userClient">
-                                <i className='emoji-icon bx bxs-smile ' style={{fontSize:"20px"}} onClick={() => setShowPicker(!showPicker)}></i>
+                                <i className='emoji-icon bx bxs-smile ' 
+                                    style={{fontSize:"20px"}} 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowPicker(!showPicker);
+                                    }}
+                                >
+                                </i>
                                 {/* show emoji picker */}
                                 {showPicker && (
-                                    <div className="post-emoji-picker" style={{position: "absolute",left:"0",top:"250px",marginLeft:"20px"}}>
+                                    <div className="post-emoji-picker" ref={emojiPickerRef} style={{position: "absolute",left:"0",top:"250px",marginLeft:"20px"}}>
                                         <EmojiPicker onEmojiClick={handleEmojiClick} />
                                     </div>
                                 )}

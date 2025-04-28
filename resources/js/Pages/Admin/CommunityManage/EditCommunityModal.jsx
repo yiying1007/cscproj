@@ -38,6 +38,13 @@ function EditCommunityModal({community,users}){
         setSelectedLeader(users.find(user => user.id === community.created_by) || null);
         clearErrors();
         reset();
+        setData({
+            name: community.name || "",
+            description: community.description || "",
+            type: community.type || "",
+            created_by: community.created_by || "",
+            is_private: community.is_private || "",
+        });
     };
     const handleShow = () => setShow(true);
 
@@ -57,6 +64,9 @@ function EditCommunityModal({community,users}){
         post(route('admin.editCommunity',community.id), {
             onSuccess: () => {
                 handleClose(); // close modal
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             },
           });
     }
@@ -115,7 +125,7 @@ function EditCommunityModal({community,users}){
                             value={data.is_private || ""}
                             onChange={(e) => setData('is_private', e.target.value)}        
                         >
-                            <Option label="Select" value="Select" />
+                            <Option label="Select" value="" />
                             <Option label="Public" value="Public" />
                             <Option label="Private" value="Private" />
                         </Select>

@@ -195,7 +195,19 @@ function PostByType({postsData = [], hasMoreData = false,fetchUrl,filterTypeComp
                         <div className="post-body">
                             <hr className="post-line" />
                             <div className="post-title">
-                            <Link className='post-detail-btn' href={route('user.postDetail',post)}><h5>{post.title}</h5></Link>
+                            <Link className='post-detail-btn' href={route('user.postDetail',post)}>
+                                <h5>
+                                    {(post.event_start_time || post.event_end_time) && (
+                                        <span className="position-tag">
+                                            <i className="bi bi-fire"></i>
+                                        &nbsp;
+                                        {post.event_start_time ? new Date(post.event_start_time).toLocaleDateString() : ''} 
+                                        {post.event_end_time && ' Until '}
+                                        {post.event_end_time ? new Date(post.event_end_time).toLocaleDateString() : ''}
+                                    </span>)}&nbsp;
+                                    {post.title}
+                                </h5>
+                            </Link>
                             </div>
                             <hr className="post-line"/>
                             <div className="post-content">

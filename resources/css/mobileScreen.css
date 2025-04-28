@@ -95,5 +95,9 @@
     .audio-container audio{
         width: 100%;
     }
+    .avatarPreview{
+        width: 200px;
+        height: 200px;
+     }
   }
   

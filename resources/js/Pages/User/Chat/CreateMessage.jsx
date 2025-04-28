@@ -36,6 +36,7 @@ function CreateMessage({ chat,targetUser }) {
             input.selectionStart = input.selectionEnd = start + emojiObject.emoji.length;
             input.focus();
         }, 0);
+        setShowPicker(false);
     };
 
     //click to close emoji box
@@ -44,7 +45,7 @@ function CreateMessage({ chat,targetUser }) {
             if (
                 emojiPickerRef.current &&
                 !emojiPickerRef.current.contains(event.target) &&
-                event.target.className !== "emoji-icon"
+                !event.target.classList.contains("emoji-icon") 
             ) {
                 setShowPicker(false);
             }
@@ -68,7 +69,7 @@ function CreateMessage({ chat,targetUser }) {
         if (!file) return;
 
         //set file limit
-        const maxSize = 100 * 1024 * 1024;
+        const maxSize = 20 * 1024 * 1024;
         //set file type allow
         const allowedTypes = [
             "image/jpeg", "image/png", "image/gif",
@@ -116,18 +117,17 @@ function CreateMessage({ chat,targetUser }) {
         submitPost(route("user.sendMessage"), {
             preserveScroll: true,
             onSuccess: () => {
-                clearErrors();
                 reset();
+                setFileError("");
                 setPreviewFile(null);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
+                
             },
         });
     }
 
     return (
         <form onSubmit={formSubmit} style={{ width: "100%" }}>
+            {fileError && <span className="errorMessage">{fileError}</span>}
             <div className="message-sent-border" style={{ position: "relative" }}>
                 <input
                     ref={inputRef}
@@ -181,7 +181,7 @@ function CreateMessage({ chat,targetUser }) {
                                 </div>
                             ) : (
                                 <div className="message-media-preview">
-                                    <img className="image" src={previewFile.url} alt="preview" style={{ height: "200px" }} />
+                                    <img className="image" src={previewFile.url} alt="preview" />
                                     <button 
                                         className="actionbtn" 
                                         type="button" 
@@ -203,8 +203,6 @@ function CreateMessage({ chat,targetUser }) {
                     onChange={handleFileChange}
                     style={{ display: "none" }}
                 />
-                {fileError && <p className="errorMessage">{fileError}</p>}
-                
                 <div className="actionStyle-userClient">
                     <i onClick={() => document.getElementById('file').click()} className='chat-icon bi bi-paperclip'></i> 
                     

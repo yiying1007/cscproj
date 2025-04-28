@@ -151,7 +151,17 @@ function PostDetail({}) {
                     </div>
                     <div className="post-body">
                         <hr className="post-line"/>
-                        <h5>{postDetail.title}</h5>
+                        <h5>
+                            {(postDetail.event_start_time || postDetail.event_end_time) && (
+                                <span className="position-tag">
+                                    <i className="bi bi-fire"></i>&nbsp;
+                                    {postDetail.event_start_time ? new Date(postDetail.event_start_time).toLocaleDateString() : ''} 
+                                        {postDetail.event_end_time && ' Until '}
+                                        {postDetail.event_end_time ? new Date(postDetail.event_end_time).toLocaleDateString() : ''}
+                                </span>
+                            )}&nbsp;
+                            {postDetail.title}
+                        </h5>
                         <div className="content-text">
                         {(postDetail.content || "").split("\n").map((line, index) => (
                             <p key={index}>{line}</p>

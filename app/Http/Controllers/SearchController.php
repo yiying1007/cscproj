@@ -14,32 +14,35 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $currentUser = auth()->user()->id;
-        //receive search
         $search = $request->input('search', '');
         $users = [];
         $communities = []; 
         $posts = []; 
-        //$users = [];
+
+        $likeOperator = DB::getDriverName() === 'pgsql' ? 'ilike' : 'like'; // 🛠 动态判断
+
         if ($search) {
             $users = User::query()
                 ->where('id', '!=', $currentUser)
-                ->where(function ($query) use ($search) {
-                    $query->where('nickname', 'like', "%{$search}%")
-                          ->orWhere('position', 'like', "%{$search}%");
+                ->where(function ($query) use ($search, $likeOperator) {
+                    $query->where('nickname', $likeOperator, "%{$search}%")
+                          ->orWhere('position', $likeOperator, "%{$search}%");
                 })
                 ->latest()
                 ->get();
-            $communities=Communities::query()
-                        ->where('name', 'like', "%{$search}%")
-                        ->orWhere('type', 'like', "%{$search}%")
+
+            $communities = Communities::query()
+                        ->where('name', $likeOperator, "%{$search}%")
+                        ->orWhere('type', $likeOperator, "%{$search}%")
                         ->latest()
                         ->get();
+
             $posts = Post::query()
                         ->leftJoin('users', 'posts.user_id', '=', 'users.id')
                         ->leftJoin('communities', 'posts.communities_id', '=', 'communities.id')
                         ->leftJoin('likes', function ($join) {
                             $join->on('likes.content_id', '=', 'posts.id')
-                                 ->where('likes.content_type', 'Post'); 
+                                 ->where('likes.content_type', 'Post');
                         })
                         ->where('posts.user_id', '!=', $currentUser) 
                         ->where('posts.is_private', 'Public') 
@@ -47,20 +50,20 @@ class SearchController extends Controller
                             $query->whereNull('posts.communities_id') 
                                   ->orWhere('communities.is_private', 'Public'); 
                         })
-                        ->where(function ($query) use ($search) {
-                            $query->where('posts.title', 'like', "%{$search}%")
-                                  ->orWhere('posts.content', 'like', "%{$search}%");
+                        ->where(function ($query) use ($search, $likeOperator) {
+                            $query->where('posts.title', $likeOperator, "%{$search}%")
+                                  ->orWhere('posts.content', $likeOperator, "%{$search}%");
                         })
                         ->select('posts.*', 'users.nickname', 'users.avatar', 'communities.name as community_name',
                                 DB::raw('COUNT(likes.id) as like_count'))
-                        ->groupBy('posts.id', 'users.nickname', 'users.avatar', 'communities.name') // 由于 COUNT 聚合函数，需要 groupBy
+                        ->groupBy('posts.id', 'users.nickname', 'users.avatar', 'communities.name')
                         ->orderByDesc('like_count')
                         ->latest()
                         ->get()
                         ->map(function ($post) {
                             $post->content = Str::limit($post->content, 100, '...');
                             return $post;
-                         });
+                        });
         }
         return Inertia('User/SearchResults', [
             'users' => $users,
