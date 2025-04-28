@@ -1251,7 +1251,6 @@ audio::-webkit-media-controls-panel {
   padding: 10px;
   border-radius: 10px;
   width: 60%;
-  width: auto;
   margin-bottom: 10px;
 }
 
