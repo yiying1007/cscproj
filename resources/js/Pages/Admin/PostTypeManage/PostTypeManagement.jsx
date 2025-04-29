@@ -25,18 +25,18 @@ function PostTypeManagement(){
                     <DataTable id="datatable" className="table">
                         <thead>
                             <tr>
-                            <th>ID</th>
+                            <th>No</th>
                             <th>Name</th>
                             <th>Last Updated</th>
                             <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {types.map((type) => {
+                            {types.map((type,index) => {
                         
                             return (
                                 <tr key={type.id}>
-                                <td>{type.id}</td>
+                                <td>{index+1}</td>
                                 <td>{type.type_name}</td>
                                 <td>{new Date(type.updated_at).toLocaleString()}</td>
                                 <td>
