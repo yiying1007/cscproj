@@ -130,7 +130,7 @@ function EditUserIdentityModal({identity,allUsers,users}){
                             <Option label="School of American Degree Program" value="School of American Degree Program" />
                             <Option label="School of Engineering, Information Technology and Allied Health Sciences" value="School of Engineering, Information Technology and Allied Health Sciences" />
                             <Option label="School of Hospitality & Tourism" value="School of Hospitality & Tourism" />
-                            <Option label="Other" value="other" />
+                            <Option label="Other" value="Other" />
                         </Select>
                         {errors.faculty && <InfoMessage className="errorMessage" message={errors.faculty}/>}
                          

@@ -103,8 +103,11 @@ class UserIdentityManageController extends Controller
         //validate user input
         $data=$request->validate([
             'name' => 'required|regex:/^[a-zA-Z\s]+$/|max:60|unique:identity_verifications,name,' . $identity->id,
-            //'email' => 'required|email|unique:identity_verifications,email,' . $identity->id,
-            'email' => 'required|email|regex:/^[a-zA-Z0-9._%+-]+@segi4u\.my$/|unique:identity_verifications,email,' . $identity->id,
+            'email' => [
+                'required',
+                'email',
+                'regex:/^[a-zA-Z0-9._%+-]+@(segi4u\.my|segi\.edu\.my)$/',
+            ],
             'role' => 'required',
             'course' => 'nullable',
             'faculty' => 'nullable',
