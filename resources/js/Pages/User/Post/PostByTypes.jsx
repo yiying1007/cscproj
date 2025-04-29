@@ -48,7 +48,7 @@ function PostByType({postsData = [], hasMoreData = false,fetchUrl,filterTypeComp
     // when scroll at bottom,auto load the post
     const loadMorePosts = async () => {
         try {
-            const res = await fetch(`${fetchUrl}?page=${page + 1}`,{
+            const res = await fetch(`${fetchUrl}?page=${page + 1}&type=${typeFilter}`,{
                 headers: { "Accept": "application/json" }
             });
             if (!res.ok) {

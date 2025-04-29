@@ -25,8 +25,9 @@ use App\Events\CommentCreated;
 
 class PostsController extends Controller
 {
-    public function showIndexPostsComponent(){
+    public function showIndexPostsComponent(Request $request){
         $userId = Auth::id();
+        $typeFilter = $request->query('type'); 
         $postTypes=PostType::all();
         $communityIds = CommunityMembers::where('user_id', $userId)
         ->pluck('communities_id')->toArray();
@@ -52,6 +53,9 @@ class PostsController extends Controller
         ->leftJoin('community_members', function ($join) use ($userId) {
             $join->on('posts.communities_id', '=', 'community_members.communities_id')
                  ->where('community_members.user_id', '=', $userId);
+        })
+        ->when($typeFilter && $typeFilter !== 'all', function ($query) use ($typeFilter) {
+            $query->where('post_types.type_name', $typeFilter);
         })
         ->where(function ($query) use ($userId, $friendIds, $communityIds) {
             // show current user post
@@ -102,6 +106,9 @@ class PostsController extends Controller
                  ->where('community_members.user_id', '=', $userId)
                  ->where('community_members.status', 'Accepted');
         })
+        ->when($typeFilter && $typeFilter !== 'all', function ($query) use ($typeFilter) {
+            $query->where('post_types.type_name', $typeFilter);
+        })
         ->where(function ($query) use ($userId) {
             $query->where('posts.is_private', 'Public')
                   ->where(function ($subQuery) use ($userId) {
@@ -140,6 +147,7 @@ class PostsController extends Controller
     public function loadMorePosts(Request $request)
     {
         $userId = Auth::id();
+        $typeFilter = $request->query('type');
         $page = $request->input('page', 1);
         $perPage = 6; 
 
@@ -167,6 +175,9 @@ class PostsController extends Controller
         ->leftJoin('community_members', function ($join) use ($userId) {
             $join->on('posts.communities_id', '=', 'community_members.communities_id')
                  ->where('community_members.user_id', '=', $userId);
+        })
+        ->when($typeFilter && $typeFilter !== 'all', function ($query) use ($typeFilter) {
+            $query->where('post_types.type_name', $typeFilter);
         })
         ->where(function ($query) use ($userId, $friendIds, $communityIds) {
             // show current user post
@@ -215,6 +226,9 @@ class PostsController extends Controller
             $join->on('posts.communities_id', '=', 'community_members.communities_id')
                  ->where('community_members.user_id', '=', $userId)
                  ->where('community_members.status', 'Accepted');
+        })
+        ->when($typeFilter && $typeFilter !== 'all', function ($query) use ($typeFilter) {
+            $query->where('post_types.type_name', $typeFilter);
         })
         ->where(function ($query) use ($userId) {
             $query->where('posts.is_private', 'Public')

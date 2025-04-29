@@ -83,7 +83,7 @@ function CommunityProfile(){
             if (isMember.status ==='Accepted') return <BootstrapButton variant="dark" onClick={handleExitShow}><i className='bx bxs-exit'></i> Exit</BootstrapButton>;
             if (isMember.status ==='Pending') return <BootstrapButton variant="dark" disabled><i className='fa fa-clock-o'></i> Pending</BootstrapButton>;
         }
-        if (community.is_private === "Public") return <BootstrapButton variant="dark" onClick={joinCommunity} disabled={processing}> <i className="bi bi-hand-index"></i>Join</BootstrapButton>;
+        if (community.is_private === "Public") return <BootstrapButton variant="dark" onClick={joinCommunity} disabled={processing}> <i className="bi bi-hand-index"></i> Join</BootstrapButton>;
         return <BootstrapButton variant="dark" onClick={sendCommunityRequest} disabled={processing}><i className="bi bi-hand-index"></i> Apply</BootstrapButton>;
     };
 
