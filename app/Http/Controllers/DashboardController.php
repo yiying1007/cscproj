@@ -26,7 +26,7 @@ class DashboardController extends Controller
         // User 
         $totalUsers=User::count();
         // Community 
-        $totalCommunities=Post::count();
+        $totalCommunities=Communities::count();
         // Post 
         $totalPosts=Post::count();
         // Detect DB driver
