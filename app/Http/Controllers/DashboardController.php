@@ -106,7 +106,7 @@ class DashboardController extends Controller
         )
         ->leftJoin('likes', function ($join) {
             $join->on('posts.id', '=', 'likes.content_id')
-                 ->where('likes.content_type', 'post');
+                 ->where('likes.content_type', 'Post');
         })
         ->leftJoin('comments', 'posts.id', '=', 'comments.post_id')
         ->whereDate('posts.created_at', Carbon::now('Asia/Kuala_Lumpur')->toDateString())
